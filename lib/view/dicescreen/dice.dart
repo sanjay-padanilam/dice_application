@@ -1,6 +1,7 @@
-import 'dart:math';
+import 'package:dice_application/controller/dicescree_controller.dart';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Dice extends StatefulWidget {
   const Dice({super.key});
@@ -10,16 +11,6 @@ class Dice extends StatefulWidget {
 }
 
 class _DiceState extends State<Dice> {
-  List diceimages = [
-    "assets/images/d1.jpg",
-    "assets/images/d2.png",
-    "assets/images/d3.png",
-    "assets/images/d4.png",
-    "assets/images/d5.png",
-    "assets/images/d6.png",
-    "assets/images/start_button.avif"
-  ];
-  int? random;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,59 +21,23 @@ class _DiceState extends State<Dice> {
         body: Center(
           child: InkWell(
             onTap: () {
-              setState(() {
-                random = Random().nextInt(6);
-              });
+              context.read<DicescreeController>().onpressed();
             },
-            child: Container(
-              height: 200,
-              width: 200,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage(random == null
-                          ? "assets/images/start_button.avif"
-                          : diceimages[random!]))),
+            child: Consumer(
+              builder: (context, value, child) => Container(
+                height: 200,
+                width: 200,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage(
+                            context.watch<DicescreeController>().random == null
+                                ? "assets/images/start_button.avif"
+                                : DicescreeController.diceimages[context
+                                    .watch<DicescreeController>()
+                                    .random!]))),
+              ),
             ),
           ),
         ));
   }
 }
-
-// import 'dart:math';
-
-// import 'package:flutter/material.dart';
-
-// class Dice extends StatefulWidget {
-//   const Dice({super.key});
-
-//   @override
-//   State<Dice> createState() => _DiceState();
-// }
-
-// class _DiceState extends State<Dice> {
-//   int? random;
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Center(
-//         child: InkWell(
-//           onTap: () {
-//             setState(() {
-//               random = Random().nextInt(6) + 1;
-//             });
-//           },
-//           child: Container(
-//             height: 200,
-//             width: 200,
-//             decoration: BoxDecoration(
-//                 image: DecorationImage(
-//                     fit: BoxFit.cover,
-//                     image: AssetImage(random == null
-//                         ? "assets/images/button.png"
-//                         : "assets/images/d$random.png"))),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
